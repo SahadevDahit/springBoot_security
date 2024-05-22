@@ -25,7 +25,7 @@ public class CustomUser implements UserDetails {
 		SimpleGrantedAuthority authority = new SimpleGrantedAuthority(user.getRole());
 		return Arrays.asList(authority);
 	}
-
+	
 
 	@Override
 	public String getPassword() {
@@ -62,6 +62,5 @@ public class CustomUser implements UserDetails {
 		// TODO Auto-generated method stub
 		return true;
 	}
-	
-
+	  
 }

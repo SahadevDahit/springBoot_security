@@ -22,4 +22,5 @@ public interface StudentDAO {
 	public ResponseEntity<String> deleteStudent(long id);
 
 	public ResponseEntity<String> deleteStudentAll();
+
 }

@@ -4,6 +4,8 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +24,8 @@ public class UsersDAO_Imple implements UsersDAO {
 
 	@Override
 	public String homePage() {
-
+		
+		
 		return "This is users home page";
 	}
 
@@ -69,5 +72,21 @@ public class UsersDAO_Imple implements UsersDAO {
 			// Handle the exception and return an appropriate response
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+
+	@Override
+	public UsersEntity getUserFromToken() {
+		 try {
+			 UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+				UsersEntity user = usersRepo.findByEmail(userDetails.getUsername());
+	           
+	            if (user == null) {
+	                throw new RuntimeException("User not found");
+	            }
+	            return user;
+	        } catch (Exception e) {
+	            throw new RuntimeException("Error retrieving user from token", e);
+	        }
+
 	}
 }

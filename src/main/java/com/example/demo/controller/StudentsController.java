@@ -17,7 +17,9 @@ import com.example.demo.services.StudentsService;
 
 import io.swagger.v3.oas.annotations.Operation;
 
+
 @RestController
+@RequestMapping("/students")
 public class StudentsController {
 
 	@Autowired
@@ -26,6 +28,7 @@ public class StudentsController {
 	@RequestMapping("/")
 	@Operation(summary="This is default home page")
 	public String viewHome() {
+		
 		return studentService.Home();
 	}
 	
@@ -34,8 +37,11 @@ public class StudentsController {
 	public String login() {
 		return "Login Please !!!";
 	}
+	
 
-	@GetMapping("/students")
+	
+
+	@GetMapping("/getAll")
 	@Operation(summary="get all students list")
 	public ResponseEntity<List<StudentsEntity>> getAllStudent() {
 		return studentService.getAllStudent();
@@ -47,7 +53,7 @@ public class StudentsController {
 		return studentService.getStudentById(id);
 	}
 
-	@PostMapping("/")
+	@PostMapping("/newStudent")
 	@Operation(summary="add new Student")
 	public ResponseEntity<StudentsEntity> addStudent(@RequestBody StudentsEntity student) {
 		return studentService.addStudent(student);

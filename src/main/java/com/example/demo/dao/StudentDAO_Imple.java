@@ -3,29 +3,47 @@ package com.example.demo.dao;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import com.example.demo.config.CustomUser;
+import com.example.demo.controller.UsersController;
 import com.example.demo.entities.StudentsEntity;
+import com.example.demo.entities.UsersEntity;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.repositories.StudentRepository;
+import com.example.demo.services.UsersService;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @Component
 public class StudentDAO_Imple implements StudentDAO {
 	private StudentRepository studentRepo;
 
+	@Autowired
+	private UsersController userController;
+	
 	public StudentDAO_Imple(StudentRepository studentRepo) {
 		this.studentRepo = studentRepo;
 	}
 
 	public String homePage() {
-		return "Welcome .....";
+		   UsersEntity user = userController.getUserFromToken();
+		    log.info("userDetails is ",user.getId());
+	      return "Welcome ....."+ user.getId();
 	}
 
 	public ResponseEntity<StudentsEntity> addStudent(StudentsEntity student) {
 		try {
+//			log.info("adding student");
+			UsersEntity user = userController.getUserFromToken();	
+			student.setUser(user);
 			StudentsEntity savedStudent = studentRepo.save(student);
-
+			
 			// Check if the save operation was successful
 			if (savedStudent != null) {
 				return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
@@ -33,6 +51,7 @@ public class StudentDAO_Imple implements StudentDAO {
 				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		} catch (Exception e) {
+			log.error(e.getMessage());
 			// Handle the exception and return an appropriate response
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
@@ -66,6 +85,7 @@ public class StudentDAO_Imple implements StudentDAO {
 			}
 		} catch (Exception e) {
 			// Handle the exception and return an appropriate response
+			log.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -73,7 +93,7 @@ public class StudentDAO_Imple implements StudentDAO {
 	public ResponseEntity<StudentsEntity> getStudentById(long id) {
 		try {
 			Optional<StudentsEntity> student = studentRepo.findById(id);
-			System.out.println(student);
+		
 			if (student.isPresent()) {
 				return new ResponseEntity<>(student.get(), HttpStatus.OK);
 			} else {
@@ -93,15 +113,15 @@ public class StudentDAO_Imple implements StudentDAO {
 				StudentsEntity existingStudent = optionalExistingStudent.get();
 
 				// Update the existingStudent with non-null values from updatedStudentData
-				if (updatedStudentData.getName() != null) {
-					existingStudent.setName(updatedStudentData.getName());
-				}
-
-				existingStudent.setRollNo(updatedStudentData.getRollNo());
-
-				if (updatedStudentData.getFaculty() != null) {
-					existingStudent.setFaculty(updatedStudentData.getFaculty());
-				}
+//				if (updatedStudentData.getName() != null) {
+//					existingStudent.setName(updatedStudentData.getName());
+//				}
+//
+//				existingStudent.setRollNo(updatedStudentData.getRollNo());
+//
+//				if (updatedStudentData.getFaculty() != null) {
+//					existingStudent.setFaculty(updatedStudentData.getFaculty());
+//				}
 
 				studentRepo.save(existingStudent);
 				return new ResponseEntity<>("Successfully updated...", HttpStatus.OK);
@@ -146,4 +166,6 @@ public class StudentDAO_Imple implements StudentDAO {
 					HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+
+
 }

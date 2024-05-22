@@ -32,4 +32,10 @@ public class UsersServiceImplementation implements UsersService {
 	public ResponseEntity<UsersEntity> updateUser(String id,UsersEntity user){
 		return users_dao.updateUser(id,user);
 	}
+
+	@Override
+	public UsersEntity getUserFromToken() {
+		// TODO Auto-generated method stub
+		return users_dao.getUserFromToken();
+	}
 }

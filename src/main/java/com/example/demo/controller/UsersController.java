@@ -7,10 +7,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+
 import com.example.demo.entities.UsersEntity;
 import com.example.demo.services.UsersService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/users")
@@ -18,12 +21,20 @@ public class UsersController {
 	@Autowired
 	private UsersService usersService;
 
-	@RequestMapping("/usersHome")
+	@RequestMapping("/")
 	@Operation(summary = "This is user home page")
 	public String usersHome() {
 		return usersService.homePage();
 	}
-
+	
+	
+	@RequestMapping("/profile")
+	@Operation(summary = "This is user home page")
+	public UsersEntity getUserFromToken() {
+			
+		return usersService.getUserFromToken();
+	}
+	
 
 	
 	@PostMapping("/newUser")
