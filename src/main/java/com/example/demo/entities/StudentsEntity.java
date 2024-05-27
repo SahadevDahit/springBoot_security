@@ -1,5 +1,9 @@
 package com.example.demo.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -33,6 +37,7 @@ public class StudentsEntity {
     private String faculty;
     
     @OneToOne
+    @JsonIgnoreProperties("student")
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UsersEntity user;
    

@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entities.StudentsEntity;
+import com.example.demo.entities.UsersEntity;
 import com.example.demo.services.StudentsService;
 
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 @RestController
 @RequestMapping("/students")
 public class StudentsController {
@@ -25,6 +29,7 @@ public class StudentsController {
 	@Autowired
 	StudentsService studentService;
 
+		
 	@RequestMapping("/")
 	@Operation(summary="This is default home page")
 	public String viewHome() {
@@ -39,8 +44,11 @@ public class StudentsController {
 	}
 	
 
-	
-
+	 @GetMapping("/me")
+	    public  ResponseEntity<StudentsEntity> getStudentDetails() {
+	        return studentService.getStudentDetailsByUserId();
+	    }
+	 
 	@GetMapping("/getAll")
 	@Operation(summary="get all students list")
 	public ResponseEntity<List<StudentsEntity>> getAllStudent() {

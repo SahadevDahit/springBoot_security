@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.entities.StudentsEntity;
@@ -22,5 +24,7 @@ public interface StudentDAO {
 	public ResponseEntity<String> deleteStudent(long id);
 
 	public ResponseEntity<String> deleteStudentAll();
+
+	public  ResponseEntity<StudentsEntity> getStudentDetailsByUserId();
 
 }

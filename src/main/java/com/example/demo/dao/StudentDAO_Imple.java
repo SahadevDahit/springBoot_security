@@ -1,6 +1,8 @@
 package com.example.demo.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.example.demo.entities.UsersEntity;
 import com.example.demo.exceptions.NoSuchElementException;
 import com.example.demo.repositories.StudentRepository;
 import com.example.demo.services.UsersService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -167,5 +170,17 @@ public class StudentDAO_Imple implements StudentDAO {
 		}
 	}
 
+	@Override
+	public ResponseEntity<StudentsEntity> getStudentDetailsByUserId() {
+	    try {
+	    	UsersEntity user = userController.getUserFromToken();
+	        StudentsEntity student = studentRepo.getStudentDetailsByUserId(user.getId());
+
+	        return ResponseEntity.ok(student);
+	    } catch (Exception e) {
+	        log.error("Error retrieving student details", e);
+	        return ResponseEntity.internalServerError().build(); // Handle unexpected errors
+	    }
+	}
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 
 import com.example.demo.entities.StudentsEntity;
@@ -21,5 +23,7 @@ public interface StudentsService {
 	public ResponseEntity<String> deleteStudent(long id);
 
 	public ResponseEntity<String> deleteStudentAll();
+
+	public ResponseEntity<StudentsEntity> getStudentDetailsByUserId();
 	
 }

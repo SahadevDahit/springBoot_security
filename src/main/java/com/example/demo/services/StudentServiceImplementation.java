@@ -1,6 +1,8 @@
 package com.example.demo.services;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.example.demo.dao.StudentDAO;
@@ -52,6 +54,13 @@ public class StudentServiceImplementation implements StudentsService {
 	@Override
 	public ResponseEntity<String> deleteStudentAll() {
 		return student_dao.deleteStudentAll();
+	}
+
+
+	@Override
+	public   ResponseEntity<StudentsEntity> getStudentDetailsByUserId() {
+		// TODO Auto-generated method stub
+	     return student_dao.getStudentDetailsByUserId();
 	}
 
 
